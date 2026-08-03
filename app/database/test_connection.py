@@ -1,22 +1,27 @@
-from sqlalchemy import text
-from app.database.session import SessionLocal
+import asyncio
 
-def test_database_connection():
-    db = SessionLocal()
+from sqlalchemy import text
+
+from app.database.session import AsyncSessionLocal
+
+
+async def test_database_connection() -> None:
     try:
-        result = db.execute(text("SELECT current_database(), current_user;"))
-        row = result.fetchone()
-        print("Conexao com PostgreSql - Bem sucedida!")
-        print(f"Database: {row[0]}, User: {row[1]}")
-        print(f"User: {row[1]}")
+        async with AsyncSessionLocal() as db:
+            result = await db.execute(
+                text("SELECT current_database(), current_user;")
+            )
+
+            row = result.one()
+
+            print("Conexão com PostgreSQL bem-sucedida!")
+            print(f"Database: {row[0]}")
+            print(f"User: {row[1]}")
 
     except Exception as error:
-        print("Erro ao conectar no PostgreSQL")
+        print("Erro ao conectar no PostgreSQL:")
         print(error)
-
-    finally:
-        db.close()
 
 
 if __name__ == "__main__":
-    test_database_connection()
+    asyncio.run(test_database_connection())
