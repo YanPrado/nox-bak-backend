@@ -1,14 +1,19 @@
 from fastapi import FastAPI
 
-from app.config.settings import settings
+from app.router import api_router
+
 
 app = FastAPI(
-    title=settings.APP_NAME
+    title="NOX Bank API",
+    version="1.0.0",
+)
+
+app.include_router(
+    api_router,
+    prefix="/api/v1",
 )
 
 
-@app.get("/")
-def root():
-    return {
-        "message": "NOX BANK API ONLINE 🚀"
-    }
+@app.get("/health", tags=["Sistema"])
+async def health_check():
+    return {"status": "online"}

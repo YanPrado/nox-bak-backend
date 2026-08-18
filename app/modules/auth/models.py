@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 from sqlalchemy import Enum as SqlEnum
-from app.core.enums import UserStatus
+from app.core.enums.user_status import UserStatus
 
 from sqlalchemy import (
     BigInteger,
